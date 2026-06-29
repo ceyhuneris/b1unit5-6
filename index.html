@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 Revision</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --bg: #f8f9fb;
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --primary-dark: #1d4ed8;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --card: #ffffff;
+    --accent: #f59e0b;
+    --accent-light: #fef3c7;
+    --u6: #7c3aed;
+    --u6-light: #ede9fe;
+    --u6-dark: #5b21b6;
+    --radius: 14px;
+    --shadow: 0 2px 16px rgba(37,99,235,0.08);
+    --shadow-lg: 0 8px 32px rgba(37,99,235,0.13);
+  }
+
+  body { font-family: 'Nunito', sans-serif; background: var(--white); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  .site-header {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 60%, #3b82f6 100%);
+    color: white; padding: 28px 40px 22px; text-align: center;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.25);
+  }
+  .site-header h1 { font-family: 'Merriweather', serif; font-size: 2.1rem; font-weight: 700; letter-spacing: 0.04em; text-shadow: 0 2px 8px rgba(0,0,0,0.18); }
+  .site-header .subtitle { font-size: 1rem; opacity: 0.82; margin-top: 4px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .main { max-width: 1300px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 130px); gap: 28px; }
+
+  /* UNIT SELECT */
+  .screen-title { font-family: 'Merriweather', serif; font-size: 1.7rem; color: var(--primary-dark); text-align: center; font-weight: 700; }
+  .screen-desc { color: var(--text-muted); font-size: 1.1rem; text-align: center; max-width: 500px; }
+
+  .unit-cards { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+  .unit-card {
+    background: var(--card); border: 2.5px solid var(--border); border-radius: 20px;
+    padding: 38px 52px; text-align: center; cursor: pointer; transition: all 0.22s;
+    min-width: 200px; box-shadow: var(--shadow);
+  }
+  .unit-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .unit-card.u5:hover { border-color: var(--primary); }
+  .unit-card.u6:hover { border-color: var(--u6); }
+  .unit-card .icon { font-size: 3rem; margin-bottom: 12px; }
+  .unit-card h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+  .unit-card.u5 h2 { color: var(--primary-dark); }
+  .unit-card.u6 h2 { color: var(--u6-dark); }
+  .unit-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+  /* MODE SELECT */
+  .mode-cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .mode-card {
+    background: var(--card); border: 2.5px solid var(--border); border-radius: 20px;
+    padding: 36px 44px; text-align: center; cursor: pointer; transition: all 0.22s;
+    min-width: 200px; box-shadow: var(--shadow);
+  }
+  .mode-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .mode-card .icon { font-size: 2.6rem; margin-bottom: 12px; }
+  .mode-card h2 { font-size: 1.4rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px; }
+  .mode-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+  /* SECTION (content pages) */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-nav { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px; padding: 10px 22px;
+    border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 1rem;
+    font-weight: 700; cursor: pointer; border: none; transition: all 0.18s;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(37,99,235,0.18); }
+  .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+  .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-outline:hover:not(:disabled) { background: var(--primary-light); }
+  .btn-back { background: var(--bg); color: var(--text-muted); border: 2px solid var(--border); }
+  .btn-back:hover { background: var(--border); }
+
+  .para-counter {
+    background: var(--accent-light); border: 2px solid var(--accent); color: #92400e;
+    padding: 6px 18px; border-radius: 30px; font-weight: 700; font-size: 1rem; margin-left: auto;
+  }
+
+  /* VOCAB LAYOUT */
+  .vocab-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+
+  .paragraph-card {
+    background: var(--card); border: 2px solid var(--primary-light); border-radius: var(--radius);
+    padding: 28px 26px; box-shadow: var(--shadow); position: sticky; top: 24px;
+    max-height: calc(100vh - 80px); overflow-y: auto;
+  }
+  .paragraph-card h3 { font-family: 'Merriweather', serif; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-light); }
+  .paragraph-card p { line-height: 1.9; font-size: 1.07rem; color: var(--text); }
+  .paragraph-card p strong { color: var(--primary-dark); }
+
+  .match-card { background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); padding: 28px 26px; box-shadow: var(--shadow); }
+  .match-card h3 { font-family: 'Merriweather', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+
+  .match-item { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 14px 16px; border-radius: 10px; background: var(--bg); border: 2px solid var(--border); transition: border-color 0.18s; }
+  .match-item:last-child { margin-bottom: 0; }
+  .match-label { font-size: 1.13rem; font-weight: 700; color: var(--text); min-width: 180px; flex-shrink: 0; }
+  .match-input-wrap { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; }
+  .match-input {
+    width: 68px; height: 46px; border: 2.5px solid var(--border); border-radius: 8px;
+    text-align: center; font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800;
+    color: var(--text); background: white; outline: none; transition: border-color 0.18s; text-transform: uppercase;
+  }
+  .match-input:focus { border-color: var(--primary); }
+  .check-btn {
+    width: 40px; height: 40px; border-radius: 8px; border: 2px solid var(--border);
+    background: white; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center;
+    justify-content: center; transition: all 0.15s; flex-shrink: 0;
+  }
+  .check-btn:hover { background: var(--primary-light); border-color: var(--primary); }
+  .match-feedback { font-size: 0.97rem; font-weight: 700; display: none; }
+  .match-item.correct { background: var(--success-light); border-color: var(--success); }
+  .match-item.correct .match-input { border-color: var(--success); color: var(--success); }
+  .match-item.correct .match-feedback { color: var(--success); display: block; }
+  .match-item.wrong { background: var(--danger-light); border-color: var(--danger); }
+  .match-item.wrong .match-input { border-color: var(--danger); color: var(--danger); }
+  .match-item.wrong .match-feedback { color: var(--danger); display: block; }
+
+  /* GRAMMAR */
+  .grammar-progress { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; flex-wrap: wrap; }
+  .progress-bar-wrap { flex: 1; min-width: 180px; height: 10px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), #60a5fa); border-radius: 99px; transition: width 0.3s; }
+  .progress-label { font-weight: 700; color: var(--primary-dark); font-size: 1rem; white-space: nowrap; }
+
+  .grammar-card { background: var(--card); border: 2px solid var(--border); border-radius: var(--radius); padding: 34px 32px; box-shadow: var(--shadow); max-width: 820px; margin: 0 auto; }
+  .question-num { display: inline-block; background: var(--primary); color: white; font-weight: 800; font-size: 0.88rem; padding: 3px 12px; border-radius: 30px; margin-bottom: 14px; letter-spacing: 0.05em; }
+  .question-text { font-size: 1.28rem; font-weight: 700; color: var(--text); margin-bottom: 24px; line-height: 1.6; }
+  .options { display: flex; flex-direction: column; gap: 13px; margin-bottom: 28px; }
+  .option { display: flex; align-items: center; gap: 14px; padding: 15px 20px; border: 2.5px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 1.13rem; font-weight: 600; transition: all 0.17s; background: var(--bg); user-select: none; }
+  .option:hover:not(.disabled) { border-color: var(--primary); background: var(--primary-light); }
+  .option .opt-letter { width: 34px; height: 34px; border-radius: 50%; background: white; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; flex-shrink: 0; transition: all 0.17s; }
+  .option.correct { border-color: var(--success); background: var(--success-light); }
+  .option.correct .opt-letter { background: var(--success); color: white; border-color: var(--success); }
+  .option.wrong { border-color: var(--danger); background: var(--danger-light); }
+  .option.wrong .opt-letter { background: var(--danger); color: white; border-color: var(--danger); }
+  .option.disabled { cursor: default; pointer-events: none; }
+  .grammar-nav { display: flex; gap: 14px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+
+  /* BREADCRUMB */
+  .breadcrumb { font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+  .breadcrumb span { color: var(--primary-dark); }
+
+  @media (max-width: 900px) {
+    .vocab-layout { grid-template-columns: 1fr; }
+    .paragraph-card { position: static; max-height: none; }
+    .site-header h1 { font-size: 1.4rem; }
+  }
+  @media (max-width: 600px) {
+    .main { padding: 18px 10px 40px; }
+    .match-label { min-width: 110px; font-size: 1rem; }
+    .grammar-card { padding: 20px 14px; }
+    .unit-card, .mode-card { padding: 24px 20px; min-width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>B1 REVISION</h1>
+  <div class="subtitle">Interactive Practice</div>
+</header>
+
+<main class="main">
+
+  <!-- SCREEN 1: UNIT SELECT -->
+  <div id="screen-unit" class="screen active">
+    <div class="screen-title">Hangi üniteyi çalışmak istersin?</div>
+    <div class="screen-desc">Önce üniteyi seç, ardından Vocabulary veya Grammar bölümünü seç.</div>
+    <div class="unit-cards">
+      <div class="unit-card u5" onclick="selectUnit(5)">
+        <div class="icon">📚</div>
+        <h2>Unit 5</h2>
+        <p>Nature, Travel & Geography</p>
+      </div>
+      <div class="unit-card u6" onclick="selectUnit(6)">
+        <div class="icon">🌍</div>
+        <h2>Unit 6</h2>
+        <p>Feelings, Daily Life & Culture</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: MODE SELECT -->
+  <div id="screen-mode" class="screen">
+    <div class="breadcrumb" id="modeBreadcrumb"></div>
+    <div class="screen-title" id="modeTitleText">Çalışmak istediğin bölümü seç</div>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="showSection('vocab')">
+        <div class="icon">📖</div>
+        <h2>Vocabulary</h2>
+        <p>Paragraf okuma ve kelime eşleştirme</p>
+      </div>
+      <div class="mode-card" onclick="showSection('grammar')">
+        <div class="icon">✏️</div>
+        <h2>Grammar</h2>
+        <p>Çoktan seçmeli gramer soruları</p>
+      </div>
+    </div>
+    <button class="btn btn-back" onclick="goUnitSelect()">← Ünite Seçimine Dön</button>
+  </div>
+
+  <!-- VOCABULARY SECTION -->
+  <div id="vocab" class="section">
+    <div class="section-nav">
+      <button class="btn btn-back" onclick="goModeSelect()">← Geri</button>
+      <button class="btn btn-outline" id="prevPara" onclick="changePara(-1)">◀ Önceki</button>
+      <button class="btn btn-primary" id="nextPara" onclick="changePara(1)">Sonraki ▶</button>
+      <span class="para-counter" id="paraCounter">Paragraf 1 / 3</span>
+    </div>
+    <div class="vocab-layout">
+      <div class="paragraph-card" id="paragraphPanel"></div>
+      <div id="matchingPanel"></div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR SECTION -->
+  <div id="grammar" class="section">
+    <div class="section-nav">
+      <button class="btn btn-back" onclick="goModeSelect()">← Geri</button>
+    </div>
+    <div class="grammar-progress">
+      <span class="progress-label" id="grammarLabel">Soru 1 / 30</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="grammarBar" style="width:3.33%"></div>
+      </div>
+    </div>
+    <div class="grammar-card" id="grammarCard"></div>
+  </div>
+
+</main>
+
+<script>
+// ============================================================
+// UNIT 5 DATA
+// ============================================================
+const unit5Paragraphs = [
+  {
+    title: "Paragraph 1: Nature, Scenery, and Greatness",
+    text: `When you go into a deep woods full of green trees and healthy plants, you are walking inside a <strong>lush forest</strong>. In this place, you can see a river that is not small; it is very strong, big, and <strong>mighty</strong>. As you look up, the high mountains look powerful, big, and <strong>majestic</strong> against the sky. The view is not just nice; it is so wonderful and <strong>glorious</strong> that it feels perfect. Everything you see is very beautiful and exciting to look at; it is simply <strong>spectacular</strong>. This view is extremely beautiful and <strong>gorgeous</strong> to look at. In fact, it is so beautiful that it surprises you, takes your breath away, and leaves you <strong>breath-taking</strong>.`,
+    words: [
+      { en: "Lush forest", correct: "C" },
+      { en: "Mighty", correct: "E" },
+      { en: "Majestic", correct: "G" },
+      { en: "Glorious", correct: "F" },
+      { en: "Spectacular", correct: "D" },
+      { en: "Gorgeous", correct: "A" },
+      { en: "Breath-taking", correct: "B" },
+    ],
+    options: [
+      { letter: "A", tr: "Harika, çok güzel" },
+      { letter: "B", tr: "Nefes kesici" },
+      { letter: "C", tr: "Gür/yemyeşil orman" },
+      { letter: "D", tr: "Muhteşem, göz alıcı" },
+      { letter: "E", tr: "Güçlü, devasa" },
+      { letter: "F", tr: "Şanlı, muhteşem" },
+      { letter: "G", tr: "Görkemli, heybetli" },
+    ]
+  },
+  {
+    title: "Paragraph 2: Travel, Culture, and Exploring",
+    text: `Before you go on a trip, you must choose the place where you want to go, which is your final <strong>destination</strong>. To learn about this place, you can read a small paper book with pictures and info called a travel <strong>brochure</strong>. Some people don't read books; they just listen to other people telling them about a good place by <strong>word of mouth</strong>. This place can be very interesting, holding your attention because it is <strong>fascinating</strong>. It has a long history and is connected to the past, making it very <strong>historical</strong>. Some buildings there are not new; they are from thousands of years ago, which means they are <strong>ancient</strong>. The atmosphere feels magic, secret, and spiritual, giving it a <strong>mystical</strong> feeling.`,
+    words: [
+      { en: "Destination", correct: "C" },
+      { en: "Brochure", correct: "E" },
+      { en: "Word of mouth", correct: "F" },
+      { en: "Fascinating", correct: "A" },
+      { en: "Historical", correct: "G" },
+      { en: "Ancient", correct: "D" },
+      { en: "Mystical", correct: "B" },
+    ],
+    options: [
+      { letter: "A", tr: "Büyüleyici, hayran bırakıcı" },
+      { letter: "B", tr: "Gizemli, mistik" },
+      { letter: "C", tr: "Varış noktası, rota" },
+      { letter: "D", tr: "Antik, çok eski" },
+      { letter: "E", tr: "Broşür" },
+      { letter: "F", tr: "Kulaktan kulağa (tavsiye)" },
+      { letter: "G", tr: "Tarihi" },
+    ]
+  },
+  {
+    title: "Paragraph 3: Geography, Environment, and Life",
+    text: `If you walk along the coast where the land meets the sea, you are standing on the <strong>seaboard</strong>. If you travel away from this coast into a wild place where people do not live, you enter the <strong>wilderness</strong>. In this wild area, nature changes all the time without stopping, moving <strong>continuously</strong>. The animals here must find good food and things their body needs for healthy <strong>nutrition</strong>. Sometimes, scientists need to take tools from friends and give them back later, so they <strong>borrow</strong> them. They use these tools to explore deep under the ground, inside an open place in a mine called a <strong>stope</strong>.`,
+    words: [
+      { en: "Seaboard", correct: "C" },
+      { en: "Wilderness", correct: "E" },
+      { en: "Continuously", correct: "F" },
+      { en: "Nutrition", correct: "A" },
+      { en: "Borrow", correct: "D" },
+      { en: "Stope", correct: "B" },
+    ],
+    options: [
+      { letter: "A", tr: "Beslenme, besin" },
+      { letter: "B", tr: "Maden ocağı galerisi / basamak" },
+      { letter: "C", tr: "Deniz kıyısı, sahil şeridi" },
+      { letter: "D", tr: "Ödünç almak" },
+      { letter: "E", tr: "Yaban hayatı, el değmemiş doğa" },
+      { letter: "F", tr: "Sürekli olarak, aralıksız" },
+    ]
+  }
+];
+
+const unit5Grammar = [
+  { q: "This laptop is ________ than the one I bought last year.", opts: ["more expensive","most expensive","expensive","the most expensive"], correct: 0 },
+  { q: "Mount Everest is ________ mountain in the world.", opts: ["the higher","highest","the highest","more high"], correct: 2 },
+  { q: "My new job is ________ than my old one, but I enjoy it more.", opts: ["stressful","the most stressful","more stressful","as stressful"], correct: 2 },
+  { q: "Of all the students in the class, Sarah is ________.", opts: ["the cleverest","cleverer","more clever","the most cleverer"], correct: 0 },
+  { q: "The weather today is even ________ than it was yesterday.", opts: ["badder","worse","worst","the worst"], correct: 1 },
+  { q: "This is ________ film I have ever seen.", opts: ["the more interesting","most interesting","the most interesting","interestingest"], correct: 2 },
+  { q: "Traveling by train is usually ________ than traveling by plane.", opts: ["more cheap","cheapest","cheaper","the cheaper"], correct: 2 },
+  { q: "London is ________ city in the United Kingdom.", opts: ["larger","the largest","the most large","largest"], correct: 1 },
+  { q: "Gold is ________ than silver.", opts: ["heavyer","heavier","the heaviest","more heavy"], correct: 1 },
+  { q: "Who is ________ person you know?", opts: ["the funniest","funnier","most funny","the most funny"], correct: 0 },
+  { q: "This puzzle is ________ than the last one.", opts: ["difficult","the difficultest","more difficult","difficultier"], correct: 2 },
+  { q: "It was ________ day of my life!", opts: ["the better","the best","best","more good"], correct: 1 },
+  { q: "My brother is slightly ________ than me.", opts: ["taller","the tallest","more tall","tallest"], correct: 0 },
+  { q: "This is ________ restaurant in town; everyone goes there.", opts: ["more popular","the most popular","popularer","the popularer"], correct: 1 },
+  { q: "Your house is ________ from the station than mine.", opts: ["farer","further","the furthest","more far"], correct: 1 },
+  { q: "Look at those dark clouds! It ________ rain very soon.", opts: ["will","is going to","is raining","rains"], correct: 1 },
+  { q: "I'm tired. I think I ________ to bed early tonight.", opts: ["am going","will go","am going to go","go"], correct: 1 },
+  { q: "We ________ the marketing team at 10:00 AM tomorrow in the boardroom.", opts: ["will meet","are meeting","meet","going to meet"], correct: 1 },
+  { q: "I ________ my grandparents this weekend. I've already bought the train tickets.", opts: ["will visit","visit","am visiting","visits"], correct: 2 },
+  { q: '"The phone is ringing!" - "Don\'t worry, I ________ it."', opts: ["will get","am going to get","am getting","get"], correct: 0 },
+  { q: "Scientists believe that people ________ on Mars by the year 2050.", opts: ["are going to live","will live","are living","live"], correct: 1 },
+  { q: "What ________ you ________ do when you finish university?", opts: ["will / do","are / going to","do / do","are / doing"], correct: 1 },
+  { q: "I ________ to the cinema with Jane tonight. We agreed to meet at 7 PM.", opts: ["will go","am going","go","going to go"], correct: 1 },
+  { q: "Be careful! That heavy box ________ fall on your foot!", opts: ["will","is going to","falls","is falling"], correct: 1 },
+  { q: "I promise I ________ tell anyone your secret.", opts: ["won't","am not going to","am not telling","don't"], correct: 0 },
+  { q: "They ________ married in June; they've already booked the hotel.", opts: ["will get","get","are getting","are going get"], correct: 2 },
+  { q: '"Would you like tea or coffee?" - "I ________ have some tea, please."', opts: ["will","am going to","am having","have"], correct: 0 },
+  { q: "My sister ________ a baby in September.", opts: ["will have","is going to have","has","is having"], correct: 1 },
+  { q: "Maybe it ________ snow this winter, but we aren't sure.", opts: ["is going to","will","is snowing","snows"], correct: 1 },
+  { q: "We ________ a big party for my father's 50th birthday next Saturday.", opts: ["will have","are having","have","are going have"], correct: 1 },
+];
+
+// ============================================================
+// UNIT 6 DATA
+// ============================================================
+const unit6Paragraphs = [
+  {
+    title: "Paragraph 1: Feelings, Character, and Human Relations",
+    text: `When you meet someone who doesn't know simple facts and refuses to learn, you might think they are <strong>ignorant</strong>. If they say something very rude to you, they <strong>insult</strong> your feelings. This makes you very angry and <strong>cross</strong> with them. You try to stay calm and accept their behavior because you want to be a <strong>tolerant</strong> person. However, when you cannot fix the problem, you feel a deep upset and <strong>frustration</strong> inside. Suddenly, they make a very strange and <strong>weird</strong> noise that makes no sense. You realize they just want all the money for themselves because they are <strong>greedy</strong>. To stop this bad situation, you make a serious promise and <strong>vow</strong> never to talk to them again. Finally, when you walk away, you feel a happy energy and <strong>excitement</strong> about your free future.`,
+    words: [
+      { en: "Ignorant", correct: "G" },
+      { en: "Cross", correct: "A" },
+      { en: "Tolerant", correct: "E" },
+      { en: "Excitement", correct: "H" },
+      { en: "Frustration", correct: "F" },
+      { en: "Greedy", correct: "I" },
+      { en: "Weird", correct: "C" },
+      { en: "Insult", correct: "B" },
+      { en: "Vow", correct: "D" },
+    ],
+    options: [
+      { letter: "A", tr: "Çarpı, karşıya geçmek, haç" },
+      { letter: "B", tr: "Hakaret etmek, aşağılamak" },
+      { letter: "C", tr: "Garip, tuhaf" },
+      { letter: "D", tr: "Yemin etmek, söz vermek" },
+      { letter: "E", tr: "Hoşgörülü, toleranslı" },
+      { letter: "F", tr: "Hüsran, hayal kırıklığı / bıkkınlık" },
+      { letter: "G", tr: "Cahil, bilgisiz" },
+      { letter: "H", tr: "Heyecan, coşku" },
+      { letter: "I", tr: "Açgözlü, doymak bilmez" },
+    ]
+  },
+  {
+    title: "Paragraph 2: Daily Life, Habits, and Actions",
+    text: `Every morning, you follow the same plan and <strong>routine</strong> to start your day. Doing exercise becomes a regular <strong>habit</strong> that you do without thinking. After exercise, you feel hungry, so you eat a little bit of food as a quick <strong>snack</strong>. You take your cup and <strong>pour</strong> hot water from the kettle into it. You add some plants to the water to make a healthy <strong>herbal</strong> tea. Suddenly, you look at the clock and see you are late; you must <strong>grab</strong> your bag quickly from the table. In your hurry, you drop everything, making the room look very untidy and a total <strong>mess</strong>. You run to a taxi, but the driver tries to cheat you and <strong>rip off</strong> your money by asking for double the price. Even though it is stressful, running through the city feels very exciting and <strong>thrilling</strong>.`,
+    words: [
+      { en: "Thrilling", correct: "I" },
+      { en: "Habit", correct: "C" },
+      { en: "Routine", correct: "E" },
+      { en: "Herbal", correct: "G" },
+      { en: "Grab", correct: "B" },
+      { en: "Pour", correct: "D" },
+      { en: "Rip off", correct: "H" },
+      { en: "Snack", correct: "F" },
+      { en: "Mess", correct: "A" },
+    ],
+    options: [
+      { letter: "A", tr: "Dağınıklık, pislik" },
+      { letter: "B", tr: "Kapmak, kapkaç yapmak, hızla yakalamak" },
+      { letter: "C", tr: "Alışkanlık" },
+      { letter: "D", tr: "Sıvı dökmek, akıtmak" },
+      { letter: "E", tr: "Rutin, alışılagelmiş düzen" },
+      { letter: "F", tr: "Atıştırmalık" },
+      { letter: "G", tr: "Bitkisel" },
+      { letter: "H", tr: "Kazıklamak, fahiş fiyat almak" },
+      { letter: "I", tr: "Heyecan verici, nefes kesici" },
+    ]
+  },
+  {
+    title: "Paragraph 3: Challenges, Time, and Structures",
+    text: `When you move to a new country, you must change your lifestyle to <strong>adapt</strong> to the new culture. If you do not know the language, it becomes a big wall or <strong>barrier</strong> between you and other people. Joining the local society and finding your place is a long process of <strong>integration</strong>. At first, it is a big <strong>struggle</strong> because everything is very difficult for you. When people ask you questions, you don't know the answers, so you just make simple <strong>guesses</strong>. All of a moment, without warning, you <strong>suddenly</strong> understand a word! To make a plan for your time, you check your weekly <strong>schedule</strong>. On Saturday, you decide to meet your friends, so you all <strong>gather</strong> together in front of an ancient religious building, a beautiful <strong>temple</strong>.`,
+    words: [
+      { en: "Guesses", correct: "E" },
+      { en: "Struggle", correct: "H" },
+      { en: "Suddenly", correct: "I" },
+      { en: "Adapt", correct: "C" },
+      { en: "Barrier", correct: "B" },
+      { en: "Integration", correct: "G" },
+      { en: "Gather", correct: "F" },
+      { en: "Schedule", correct: "D" },
+      { en: "Temple", correct: "A" },
+    ],
+    options: [
+      { letter: "A", tr: "Tapınak" },
+      { letter: "B", tr: "Engel, bariyer" },
+      { letter: "C", tr: "Uyum sağlamak, adapte olmak" },
+      { letter: "D", tr: "Program, zaman çizelgesi" },
+      { letter: "E", tr: "Tahminler" },
+      { letter: "F", tr: "Toplanmak, bir araya getirmek" },
+      { letter: "G", tr: "Entegrasyon, bütünleşme" },
+      { letter: "H", tr: "Mücadele etmek, çabalamak" },
+      { letter: "I", tr: "Aniden, birdenbire" },
+    ]
+  }
+];
+
+const unit6Grammar = [
+  { q: "We are walking in Rome, and there is a beautiful café right in front of us. We ________ grab a quick espresso here!", opts: ["can","could"], correct: 0 },
+  { q: "I'm bored at home. I have no plans for tonight. I guess I ________ read a book or watch a documentary.", opts: ["can","could"], correct: 1 },
+  { q: '"What should we get for Mom\'s birthday next month?" - "Well, we ________ buy her a sweater, or we ________ get her a gift card."', opts: ["can / can","could / could"], correct: 1 },
+  { q: "Great news! The manager has just finished his meeting and is free now. You ________ talk to him immediately.", opts: ["can","could"], correct: 0 },
+  { q: '"I have no idea what to cook tonight." - "We ________ order Chinese food, or maybe just make some pasta if you want."', opts: ["can","could"], correct: 1 },
+  { q: "The hotel room has a private balcony with two chairs. We ________ sit outside and watch the sunset tonight!", opts: ["can","could"], correct: 0 },
+  { q: "If we ever save enough money in the next few years, we ________ buy a nice house near the sea.", opts: ["can","could"], correct: 1 },
+  { q: "My car is parked outside and the tank is full. I ________ drive you to the supermarket right now.", opts: ["can","could"], correct: 0 },
+  { q: '"We need to plan our next weekend trip." - "We ________ visit the local museum on Saturday, and then we ________ go for a hike on Sunday."', opts: ["can / can","could / could"], correct: 1 },
+  { q: "The subway station is right next to our apartment, so we ________ reach the city center in ten minutes.", opts: ["can","could"], correct: 0 },
+  { q: '"I\'m so hungry, but the fridge is completely empty." - "We ________ walk to the grocery store down the street; it\'s open."', opts: ["can","could"], correct: 0 },
+  { q: "I don't have any concrete plans for next summer yet. I ________ take a Spanish course, but I haven't decided.", opts: ["can","could"], correct: 1 },
+  { q: "The weather is perfect and the tennis court is booked for us. We ________ play a match right now!", opts: ["can","could"], correct: 0 },
+  { q: "We have some old wooden boards in the garage. We ________ build a small doghouse if we ever find the time.", opts: ["can","could"], correct: 0 },
+  { q: "I have my laptop open and the Wi-Fi is working perfectly. I ________ send the email to the client right away.", opts: ["can","could"], correct: 0 },
+  { q: "You ________ wear a seatbelt when driving; it is a strict law in this country.", opts: ["should","have to","could","can"], correct: 1 },
+  { q: "I think you ________ apologize to Sarah. It was clearly your mistake.", opts: ["must","have to","should","can"], correct: 2 },
+  { q: "Students ________ bring a valid ID to enter the examination hall. It is an absolute official requirement.", opts: ["should","can","have to","could"], correct: 2 },
+  { q: "Tomorrow is Sunday and the office is closed, so I ________ wake up early. I can sleep in!", opts: ["don't have to","mustn't","shouldn't","couldn't"], correct: 0 },
+  { q: "You ________ touch that wire! It is extremely dangerous and can shock you.", opts: ["don't have to","shouldn't","mustn't","couldn't"], correct: 2 },
+  { q: "My doctor told me that I ________ reduce my sugar intake if I want to stay healthy.", opts: ["have to","could","can","should"], correct: 3 },
+  { q: "In the military, soldiers ________ follow the orders of their superiors without questioning.", opts: ["should","have to","can","could"], correct: 1 },
+  { q: "You ________ visit the Louvre museum while you are in Paris. It is absolutely magnificent!", opts: ["have to","should","must","can"], correct: 2 },
+  { q: "We are late! The train leaves in five minutes, so we ________ run!", opts: ["should","must","could","can"], correct: 1 },
+  { q: "Children under the age of five ________ pay for the museum tickets; they can enter for free.", opts: ["shouldn't","don't have to","mustn't","couldn't"], correct: 1 },
+  { q: "You ________ drink some warm tea if you have a sore throat. It might make you feel better.", opts: ["should","must","have to","can"], correct: 0 },
+  { q: "To get a professional driver's license, you ________ pass both a written test and a practical exam.", opts: ["should","could","have to","can"], correct: 2 },
+  { q: "Drivers ________ park in front of the hospital emergency entrance. The police will tow the car immediately.", opts: ["shouldn't","mustn't","don't have to","couldn't"], correct: 1 },
+  { q: "I ________ study hard tonight because we have a very important final exam tomorrow morning.", opts: ["should","can","must","could"], correct: 2 },
+  { q: "You ________ wear a tie to the office, but many managers choose to do so anyway.", opts: ["don't have to","mustn't","shouldn't","couldn't"], correct: 0 },
+  { q: "We have all the fresh ingredients in the kitchen and the recipe is on the counter. We ________ bake the cake now!", opts: ["can","could","don't need to","have to"], correct: 0 },
+  { q: "If you are feeling too tired, we ________ stay at home tonight instead of going to the cinema. It's just a suggestion.", opts: ["must","have to","could","should"], correct: 2 },
+  { q: "You ________ smoke inside the public library. It is strictly forbidden by law.", opts: ["don't have to","mustn't","shouldn't","couldn't"], correct: 1 },
+  { q: "I ________ wear glasses because I cannot see the whiteboard clearly from the back of the classroom.", opts: ["should","must","have to","can"], correct: 2 },
+  { q: '"How about our plans for the holiday?" - "We ________ rent a cabin in the woods, or we ________ go to a beach hotel."', opts: ["have to / have to","could / could","must / must","should / should"], correct: 1 },
+  { q: "Since you already have a VIP ticket, you ________ wait in the long queue. You can use the fast-track entrance.", opts: ["mustn't","don't have to","shouldn't","can't"], correct: 1 },
+  { q: "This is a very confidential document. You ________ show it to anyone under any circumstances.", opts: ["shouldn't","mustn't","don't have to","couldn't"], correct: 1 },
+  { q: "The weather forecast says it might rain later in the afternoon. You ________ take an umbrella with you.", opts: ["should","have to","must","could"], correct: 0 },
+  { q: "Look, the main gate is open and there are no guards around. We ________ walk inside and explore!", opts: ["can","could","have to","must"], correct: 0 },
+  { q: "I have no concrete plans for next weekend. I ________ go camping with my brother, but I'll see how I feel.", opts: ["can","should","have to","could"], correct: 3 },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let activeUnit = 5;
+let currentPara = 0;
+let currentGrammar = 0;
+let grammarAnswered = [];
+
+function getParagraphs() { return activeUnit === 5 ? unit5Paragraphs : unit6Paragraphs; }
+function getGrammar()    { return activeUnit === 5 ? unit5Grammar    : unit6Grammar;    }
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function selectUnit(u) {
+  activeUnit = u;
+  document.getElementById('modeBreadcrumb').innerHTML = `<span>Unit ${u}</span> &rsaquo; Bölüm Seç`;
+  showScreen('screen-mode');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goUnitSelect() { showScreen('screen-unit'); }
+
+function goModeSelect() {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  showScreen('screen-mode');
+}
+
+function showSection(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'vocab') {
+    currentPara = 0;
+    renderVocab();
+  }
+  if (id === 'grammar') {
+    currentGrammar = 0;
+    grammarAnswered = new Array(getGrammar().length).fill(null);
+    renderGrammar();
+  }
+}
+
+function changePara(dir) {
+  const paras = getParagraphs();
+  currentPara = Math.max(0, Math.min(paras.length - 1, currentPara + dir));
+  renderVocab();
+}
+
+// ============================================================
+// VOCABULARY RENDER
+// ============================================================
+function renderVocab() {
+  const paras = getParagraphs();
+  const p = paras[currentPara];
+  document.getElementById('paraCounter').textContent = `Paragraf ${currentPara + 1} / ${paras.length}`;
+  document.getElementById('prevPara').disabled = currentPara === 0;
+  document.getElementById('nextPara').disabled = currentPara === paras.length - 1;
+
+  document.getElementById('paragraphPanel').innerHTML = `
+    <h3>${p.title}</h3>
+    <p>${p.text}</p>
+  `;
+
+  let matchHTML = `<div class="match-card"><h3>🔤 Kelime Eşleştirme</h3>`;
+  matchHTML += `<div style="margin-bottom:18px;padding:12px 16px;background:var(--accent-light);border-radius:10px;font-size:1.05rem;line-height:1.9;">
+    <strong>Seçenekler:</strong><br>`;
+  p.options.forEach(o => {
+    matchHTML += `<span style="margin-right:14px;"><strong>${o.letter})</strong> ${o.tr}</span>`;
+  });
+  matchHTML += `</div>`;
+
+  p.words.forEach((w, i) => {
+    matchHTML += `
+      <div class="match-item" id="match-${currentPara}-${i}">
+        <div class="match-label">${i + 1}. ${w.en}</div>
+        <div class="match-input-wrap">
+          <input class="match-input" type="text" maxlength="1" id="input-${currentPara}-${i}" placeholder="?" oninput="this.value=this.value.toUpperCase()" />
+          <button class="check-btn" onclick="checkMatch(${currentPara},${i})" title="Kontrol et">✔</button>
+          <span class="match-feedback" id="fb-${currentPara}-${i}"></span>
+        </div>
+      </div>`;
+  });
+
+  matchHTML += `</div>`;
+  document.getElementById('matchingPanel').innerHTML = matchHTML;
+}
+
+function checkMatch(paraIdx, wordIdx) {
+  const p = getParagraphs()[paraIdx];
+  const input = document.getElementById(`input-${paraIdx}-${wordIdx}`);
+  const item  = document.getElementById(`match-${paraIdx}-${wordIdx}`);
+  const fb    = document.getElementById(`fb-${paraIdx}-${wordIdx}`);
+  const val   = input.value.trim().toUpperCase();
+  const correct = p.words[wordIdx].correct.toUpperCase();
+
+  item.classList.remove('correct', 'wrong');
+  if (!val) return;
+
+  if (val === correct) {
+    item.classList.add('correct');
+    fb.textContent = '✅ Doğru!';
+  } else {
+    item.classList.add('wrong');
+    const correctOpt = p.options.find(o => o.letter === correct);
+    fb.textContent = `❌ Cevap: ${correct}) ${correctOpt ? correctOpt.tr : ''}`;
+  }
+}
+
+// ============================================================
+// GRAMMAR RENDER
+// ============================================================
+function renderGrammar() {
+  const questions = getGrammar();
+  const total = questions.length;
+  const q = questions[currentGrammar];
+  const answered = grammarAnswered[currentGrammar];
+  const letters = ['a', 'b', 'c', 'd'];
+
+  document.getElementById('grammarLabel').textContent = `Soru ${currentGrammar + 1} / ${total}`;
+  document.getElementById('grammarBar').style.width = `${((currentGrammar + 1) / total) * 100}%`;
+
+  let optsHTML = q.opts.map((opt, i) => {
+    let cls = 'option';
+    if (answered !== null) {
+      cls += ' disabled';
+      if (i === q.correct) cls += ' correct';
+      else if (i === answered) cls += ' wrong';
+    }
+    return `<div class="${cls}" onclick="answerGrammar(${i})">
+      <span class="opt-letter">${letters[i].toUpperCase()}</span>
+      <span>${letters[i]}) ${opt}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('grammarCard').innerHTML = `
+    <span class="question-num">SORU ${currentGrammar + 1}</span>
+    <div class="question-text">${q.q}</div>
+    <div class="options">${optsHTML}</div>
+    <div class="grammar-nav">
+      <button class="btn btn-outline" onclick="changeGrammar(-1)" ${currentGrammar === 0 ? 'disabled' : ''}>◀ Önceki</button>
+      <button class="btn btn-primary" onclick="changeGrammar(1)" ${currentGrammar === total - 1 ? 'disabled' : ''}>Sonraki ▶</button>
+    </div>
+  `;
+}
+
+function answerGrammar(chosen) {
+  if (grammarAnswered[currentGrammar] !== null) return;
+  grammarAnswered[currentGrammar] = chosen;
+  renderGrammar();
+}
+
+function changeGrammar(dir) {
+  const total = getGrammar().length;
+  currentGrammar = Math.max(0, Math.min(total - 1, currentGrammar + dir));
+  renderGrammar();
+}
+</script>
+</body>
+</html>
